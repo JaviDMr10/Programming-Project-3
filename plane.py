@@ -1,3 +1,4 @@
+
 from seat import Seat
 
 class Airplane:
@@ -37,39 +38,52 @@ class Airplane:
             print("All seats are taken. No seats are available for purchase.")
             return
 
-        seat_numbers = input("Enter the seat numbers you would like to purchase (comma separated): \n").split(",")
-        total_cost = 0
+        while True:
+            seat_numbers = input("Enter the seat numbers you would like to purchase (comma separated): \n").split(",")
+            for i in range(len(seat_numbers)):
+                seat_numbers[i] = seat_numbers[i].strip()
+            total_cost = 0
+            valid_selection = True
 
-        for selection in seat_numbers:
-            selection = selection.strip()
-            selection = int(selection)
+            for selection in seat_numbers:
+                selection = int(selection)
+                seat = self.seats[selection - 1]
+                if seat.status == "Taken":
+                    print(f"Seat {selection} is already taken. Please choose a different seat.")
+                    valid_selection = False
+                    break
 
-            seat = self.seats[selection - 1]
-            if seat.status == "Taken":
-                print(f"Seat {selection} is already taken. Please choose a different seat.")
+            if not valid_selection:
                 continue
 
-            if seat.seat_type == "First Class":
-                total_cost += 140
-                print(f"Seat {selection} is First Class. $140 has been added to your total.")
-            elif seat.seat_type == "Emergency":
-                total_cost += 30
-                response = input(f"Seat {selection} is an Emergency seat. Do you accept the terms in case of an emergency?: (yes/no) \n")
-                response = response.lower()
-                if response == "yes":
+            for selection in seat_numbers:
+                selection = int(selection)
+                seat = self.seats[selection - 1]
+
+                if seat.seat_type == "First Class":
+                    total_cost += 140
+                    print(f"Seat {selection} is First Class. $140 has been added to your total.")
+                elif seat.seat_type == "Emergency":
+                    total_cost += 30
+                    response = input(
+                        f"Seat {selection} is an Emergency seat. Do you accept the terms in case of an emergency? (yes/no) \n")
+                    response = response.lower()
+                    if response != "yes":
+                        print(f"You must accept the terms in order to purchase this seat.")
+                        continue
                     print("$30 has been added to your total.")
-                elif response != "yes":
-                    print(f"You must accept the terms in order to purchase this seat.")
-                    continue
+                else:
+                    total_cost += 40
+                    print(f"Seat {selection} is a regular seat. $40 has been added to your total.")
 
-            else:
-                total_cost += 40
-                print(f"Seat {selection} is a regular seat. $40 has been added to your total.")
+                seat.select()
 
-            seat.select()
 
-        print(f"The total cost for your selected seats is: ${total_cost}")
-        print("Thank you for using Come Fly with me!")
+            print(f"The total cost for your selected seats is: ${total_cost}")
+            print("Thank you for using Come Fly with me!")
+            break
+
+
 
 
 

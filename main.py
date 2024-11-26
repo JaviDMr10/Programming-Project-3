@@ -36,7 +36,7 @@ def main():
                 plane.purchase_seats()
                 print(". \n. \n. \n. \n")
             else:
-                print("Thank you for using Come Fly with me!")
+                print("Thank you for using Come Fly wit1h me!")
                 print(". \n. \n. \n. \n")
 
         elif choice == "3":
